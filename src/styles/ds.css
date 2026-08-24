@@ -1,0 +1,87 @@
+/**
+ * Design-system component styles, ported from the PrivexLabs Design System project.
+ *
+ * Class names carry a `pxds-` prefix: the source components inject `.px-btn`, `.px-card`,
+ * `.px-input` and `.px-table` at runtime, which collide with this site's own chrome classes
+ * of the same names. Only the prefix changed — every declaration is the original.
+ */
+
+.pxds-btn {
+  font-family: var(--font-sans); font-weight: 600; border-radius: var(--radius-1);
+  border: 1px solid transparent; cursor: pointer; display: inline-flex;
+  align-items: center; justify-content: center; gap: 8px;
+  transition: background var(--duration-1) var(--ease-standard), border-color var(--duration-1) var(--ease-standard);
+  text-decoration: none; box-sizing: border-box;
+}
+.pxds-btn:disabled { opacity: .45; cursor: not-allowed; }
+.pxds-btn--sm { height: 32px; padding: 0 12px; font-size: 13px; }
+.pxds-btn--md { height: 40px; padding: 0 16px; font-size: 14px; }
+.pxds-btn--lg { height: 48px; padding: 0 22px; font-size: 15px; }
+.pxds-btn--primary { background: var(--color-brand-primary); color: var(--color-text-on-brand); }
+.pxds-btn--primary:hover:not(:disabled) { background: var(--color-brand-primary-hover); }
+.pxds-btn--secondary { background: transparent; color: var(--color-text-primary); border-color: var(--color-border-strong); }
+.pxds-btn--secondary:hover:not(:disabled) { background: var(--color-surface-muted); }
+.pxds-btn--ghost { background: transparent; color: var(--color-brand-primary); }
+.pxds-btn--ghost:hover:not(:disabled) { background: var(--color-surface-muted); }
+.pxds-btn--danger { background: var(--color-danger); color: #fff; }
+.pxds-btn--danger:hover:not(:disabled) { filter: brightness(.9); }
+
+.pxds-badge {
+  font-family: var(--font-mono); font-size: 10.5px; font-weight: 500; letter-spacing: .07em;
+  text-transform: uppercase; display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px; border-radius: var(--radius-round); border: 1px solid;
+}
+.pxds-badge__dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+.pxds-card {
+  background: var(--color-surface-elevated); border: 1px solid var(--color-border);
+  border-radius: var(--radius-2); box-sizing: border-box;
+}
+.pxds-card--interactive {
+  transition: box-shadow var(--duration-1) var(--ease-standard), border-color var(--duration-1) var(--ease-standard);
+  cursor: pointer;
+}
+.pxds-card--interactive:hover { box-shadow: var(--shadow-1); border-color: var(--color-border-strong); }
+
+.pxds-input {
+  font-family: var(--font-sans); font-size: 14px; color: var(--color-text-primary);
+  background: var(--color-surface-elevated); border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-1); height: 40px; padding: 0 12px; box-sizing: border-box;
+  width: 100%; transition: border-color var(--duration-1) var(--ease-standard);
+}
+.pxds-input::placeholder { color: var(--color-text-muted); }
+.pxds-input:hover { border-color: var(--neutral-500); }
+.pxds-input:focus { outline: none; border-color: var(--color-brand-primary); box-shadow: 0 0 0 1px var(--color-brand-primary); }
+.pxds-input--error { border-color: var(--color-danger); }
+.pxds-input:disabled { background: var(--color-surface-muted); color: var(--color-text-muted); cursor: not-allowed; }
+textarea.pxds-input { height: auto; padding: 10px 12px; resize: vertical; }
+
+.pxds-table {
+  width: 100%; border-collapse: collapse; font-family: var(--font-sans); font-size: 13.5px;
+  background: var(--color-surface-elevated); border: 1px solid var(--color-border); border-radius: var(--radius-2);
+}
+.pxds-table th {
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase;
+  font-weight: 500; color: var(--color-text-muted); text-align: left; padding: 10px 14px;
+  border-bottom: 1px solid var(--color-border);
+}
+.pxds-table td { padding: 10px 14px; border-bottom: 1px solid var(--color-divider); color: var(--color-text-primary); }
+.pxds-table tr:last-child td { border-bottom: none; }
+.pxds-table td.pxds-num, .pxds-table th.pxds-num { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.pxds-table--hover tbody tr { transition: background var(--duration-1) var(--ease-standard); }
+.pxds-table--hover tbody tr:hover { background: var(--color-surface); }
+
+.pxds-hdr {
+  display: flex; align-items: center; gap: 32px; height: 64px; padding: 0 32px;
+  background: var(--color-surface-elevated); border-bottom: 1px solid var(--color-border);
+  box-sizing: border-box; font-family: var(--font-sans);
+}
+.pxds-hdr__nav { display: flex; gap: 24px; align-items: center; }
+.pxds-hdr__link {
+  font-size: 14px; font-weight: 500; color: var(--color-text-secondary); text-decoration: none;
+  padding: 4px 0; border-bottom: 2px solid transparent; transition: color var(--duration-1) var(--ease-standard);
+}
+.pxds-hdr__link:hover { color: var(--color-text-primary); text-decoration: none; }
+.pxds-hdr__link--active { color: var(--color-text-primary); border-bottom-color: var(--color-brand-primary); }
+
+@keyframes pxflow { to { stroke-dashoffset: -24; } }

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 244 48" fill="none">
+<rect x="3.5" y="3.5" width="41" height="41" rx="9" stroke="#3FA98D" stroke-width="3"></rect>
+<path d="M18 35 V13 H31.5 V24 H22" stroke="#3FA98D" stroke-width="3"></path>
+<rect x="19" y="21" width="6" height="6" fill="#D8A945"></rect>
+<text x="60" y="33" font-family="Archivo, system-ui, sans-serif" font-size="27" font-weight="800" letter-spacing="-0.5" fill="#E9EDE8">Privex<tspan fill="#3FA98D">Labs</tspan></text>
+</svg>
