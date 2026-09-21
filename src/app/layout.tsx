@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "@/styles/globals.css";
 import { SiteHeader } from "@/components/site/SiteHeader";
+import { TEMPLATES } from "@/lib/templates";
 
 export const metadata: Metadata = {
   title: {
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
     template: "%s · PrivexLabs Brand Kit",
   },
   description:
-    "The PrivexLabs brand identity playbook and template editor — tokens, assets, voice, and 130 exportable social, ad, email and web templates.",
+    `The PrivexLabs brand identity playbook and template editor — tokens, assets, voice, and ${TEMPLATES.length} exportable social, ad, email, web and article templates.`,
   icons: {
     icon: [
       { url: "/brand/favicon.svg", type: "image/svg+xml" },

@@ -46,10 +46,10 @@ export function Label({ children, u, color, size = 20 }: { children: React.React
 }
 
 /** Registration marks at the frame corners — a core motif, not decoration. */
-export function RegMarks({ pad, skin, w, h }: { pad: number; skin: Skin; w: number; h: number }) {
+export function RegMarks({ pad, skin }: { pad: number; skin: Skin }) {
   const s = Math.max(12, Math.round(pad * 0.22));
   const off = Math.round(pad * 0.5);
-  const stroke = skin.dark ? skin.border : skin.border;
+  const stroke = skin.border;
   const mark = (style: CSSProperties) => (
     <svg width={s} height={s} viewBox="0 0 20 20" style={{ position: "absolute", ...style }} stroke={stroke} strokeWidth="1.5">
       <path d="M10 0v20M0 10h20" />
@@ -61,7 +61,6 @@ export function RegMarks({ pad, skin, w, h }: { pad: number; skin: Skin; w: numb
       {mark({ top: off, right: off })}
       {mark({ bottom: off, left: off })}
       {mark({ bottom: off, right: off })}
-      <span style={{ position: "absolute", inset: 0, width: w, height: h, pointerEvents: "none" }} />
     </>
   );
 }

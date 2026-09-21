@@ -2,27 +2,32 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { DoDont, Grid, Note, PageHead, Section, Table } from "@/components/site/ui";
 import { Mark } from "@/components/canvas/primitives";
-import { logoRules } from "@/lib/brand";
+import { discipline, logoRules, logoSpecs, logoVariants, philosophy } from "@/lib/brand";
 import { P } from "@/lib/palette";
 
 export const metadata: Metadata = { title: "Logo & mark" };
 
-const VARIANTS = [
-  { file: "/brand/logo.svg", name: "logo.svg", use: "Horizontal lockup, light backgrounds", bg: "var(--color-surface-elevated)", w: 244 },
-  { file: "/brand/logo-dark.svg", name: "logo-dark.svg", use: "Horizontal lockup, dark backgrounds", bg: P.foundation, w: 244 },
-  { file: "/brand/logo-mono.svg", name: "logo-mono.svg", use: "Single colour — print, engraving, watermark", bg: "var(--color-surface-muted)", w: 244 },
-  { file: "/brand/mark.svg", name: "mark.svg", use: "Icon only, light backgrounds", bg: "var(--color-surface-elevated)", w: 64 },
-  { file: "/brand/mark-dark.svg", name: "mark-dark.svg", use: "Icon only, dark backgrounds", bg: P.foundation, w: 64 },
-  { file: "/brand/favicon.svg", name: "favicon.svg", use: "Filled tile at 24px and below", bg: "var(--color-surface-muted)", w: 56 },
-];
+/** How each supplied file is displayed here. The file list itself lives in brand.ts. */
+const RENDER: Record<string, { file: string; bg: string; w: number }> = {
+  "logo.svg": { file: "/brand/logo.svg", bg: "var(--color-surface-elevated)", w: 244 },
+  "logo-dark.svg": { file: "/brand/logo-dark.svg", bg: P.foundation, w: 244 },
+  "logo-mono.svg": { file: "/brand/logo-mono.svg", bg: "var(--color-surface-muted)", w: 244 },
+  "mark.svg": { file: "/brand/mark.svg", bg: "var(--color-surface-elevated)", w: 64 },
+  "mark-dark.svg": { file: "/brand/mark-dark.svg", bg: P.foundation, w: 64 },
+  "mark-mono.svg": { file: "/brand/mark-mono.svg", bg: "var(--color-surface-muted)", w: 64 },
+  "favicon.svg": { file: "/brand/favicon.svg", bg: "var(--color-surface-muted)", w: 56 },
+  "avatar.svg": { file: "/brand/avatar.svg", bg: "var(--color-surface-muted)", w: 64 },
+};
+
+const VARIANTS = logoVariants.map((v) => ({ ...v, ...RENDER[v.name] }));
 
 export default function LogoPage() {
   return (
     <>
       <PageHead
         index="01 / LOGO & MARK"
-        title="One mark, shared by every pillar"
-        lede="A rounded boundary square holds an orthogonal trace that terminates in a brass node — the private boundary, the signal path, the signal terminal. It is drawn in the system's own diagram language, so it belongs to the same grammar as every chart and schematic we publish."
+        title="One mark, shared by every area of work"
+        lede={philosophy.logo}
       />
 
       <Section index="1.1" title="Construction" lede="Pure geometry on a 48-unit grid. 3-unit strokes, 9-unit corner radius, a 6-unit brass node seated on the trace. The mark is never redrawn or re-traced — it is used as supplied.">
@@ -63,26 +68,12 @@ export default function LogoPage() {
       <Section index="1.3" title="Clear space and minimums">
         <Table
           head={["Rule", "Value"]}
-          rows={[
-            ["Clear space", logoRules.clearSpace],
-            ["Minimum mark", "20px — below this, use the filled favicon tile"],
-            ["Minimum lockup", "96px wide"],
-            ["Lockup text", "Live SVG text in Archivo. Outline the text for contexts where Archivo is not loaded."],
-            ["Pillar lockups", "Wordmark plus a mono pillar label. Never a separate symbol."],
-          ]}
+          rows={logoSpecs.map((r) => [...r])}
         />
       </Section>
 
       <Section index="1.4" title="What is never done">
-        <DoDont
-          dos={[
-            "Use the supplied file for the surface you are on",
-            "Give the mark its full clear space, even in tight headers",
-            "Switch to the favicon tile below 20px",
-            "Set colour on mono variants through currentColor",
-          ]}
-          donts={logoRules.never}
-        />
+        <DoDont dos={discipline.logo.dos} donts={discipline.logo.donts} />
       </Section>
     </>
   );

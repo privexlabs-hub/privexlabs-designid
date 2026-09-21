@@ -6,8 +6,11 @@ import { CanvasStage } from "./CanvasStage";
 import { Inspector } from "./Inspector";
 import { ExportPanel, type BatchJob } from "./ExportPanel";
 import {
-  CATEGORIES, TEMPLATES, TEMPLATES_BY_CATEGORY, TEMPLATE_BY_ID, docFromTemplate, sizeOf,
+  CATEGORIES, SIZE_BY_ID, TEMPLATES, TEMPLATES_BY_CATEGORY, TEMPLATE_BY_ID,
+  carryArticleCopy, collectArticleCopy, docFromTemplate, sizeOf, type ArticleCopy,
 } from "@/lib/templates";
+import type { Doc } from "@/lib/templates/types";
+import { ARTICLE_PACK, isArticleLayout } from "@/lib/templates/types";
 import { LAYOUT_LABELS } from "@/lib/templates/layouts";
 
 const ZOOMS: (number | "fit")[] = ["fit", 0.25, 0.5, 1];
@@ -22,6 +25,7 @@ export function Editor() {
 
   const [templateId, setTemplateId] = useState(initialTemplate.id);
   const [doc, setDoc] = useState(() => docFromTemplate(initialTemplate));
+  const [articleCopy, setArticleCopy] = useState<ArticleCopy | null>(() => collectArticleCopy(null, docFromTemplate(initialTemplate)));
   const [query, setQuery] = useState("");
   const [zoom, setZoom] = useState<number | "fit">("fit");
   const nodeRef = useRef<HTMLDivElement>(null);
@@ -29,10 +33,20 @@ export function Editor() {
   const template = TEMPLATE_BY_ID[templateId];
   const size = sizeOf(doc);
 
+  /** Every change to the design goes through here, so the running article copy stays current. */
+  function commit(next: Doc) {
+    setDoc(next);
+    setArticleCopy((prev) => collectArticleCopy(prev, next));
+  }
+
   function select(id: string) {
-    const t = TEMPLATE_BY_ID[id];
     setTemplateId(id);
-    setDoc(docFromTemplate(t));
+    // Opening an article template keeps the article — only the treatment changes.
+    commit(carryArticleCopy(articleCopy, docFromTemplate(TEMPLATE_BY_ID[id])));
+  }
+
+  function resetCopy() {
+    commit(docFromTemplate(TEMPLATE_BY_ID[templateId]));
   }
 
   const filtered = useMemo(() => {
@@ -49,16 +63,30 @@ export function Editor() {
   const batchJobs = useMemo(() => {
     const toJob = (id: string): BatchJob => {
       const t = TEMPLATE_BY_ID[id];
-      // The artboard being edited exports with its edits; the rest export from their defaults.
-      return { name: `${t.category}-${t.name}`, doc: id === templateId ? doc : docFromTemplate(t) };
+      // The artboard being edited exports with its edits. Other article templates take the
+      // article copy written so far; everything else exports from its defaults.
+      return { name: `${t.category}-${t.name}`, doc: id === templateId ? doc : carryArticleCopy(articleCopy, docFromTemplate(t)) };
     };
     return {
       category: TEMPLATES.filter((t) => t.category === template.category).map((t) => toJob(t.id)),
       all: TEMPLATES.map((t) => toJob(t.id)),
     };
-  }, [doc, templateId, template.category]);
+  }, [doc, articleCopy, templateId, template.category]);
 
   const categoryLabel = CATEGORIES.find((c) => c.id === template.category)?.name ?? template.category;
+  const article = isArticleLayout(doc.layout);
+
+  /** This exact design, at every article platform size. */
+  const pack = useMemo(() => {
+    if (!article) return undefined;
+    return {
+      platforms: ARTICLE_PACK.map((p) => p.platform),
+      jobs: ARTICLE_PACK.map((p): BatchJob => {
+        const s = SIZE_BY_ID[p.sizeId];
+        return { name: `${p.platform}-${s.w}x${s.h}`, doc: { ...doc, sizeId: p.sizeId } };
+      }),
+    };
+  }, [article, doc]);
 
   return (
     <div className="px-editor">
@@ -91,7 +119,7 @@ export function Editor() {
               </button>
             ))}
           </div>
-          <button type="button" className="px-btn px-btn--ghost px-btn--sm" onClick={() => select(templateId)}>
+          <button type="button" className="px-btn px-btn--ghost px-btn--sm" onClick={resetCopy}>
             Reset copy
           </button>
         </div>
@@ -101,13 +129,20 @@ export function Editor() {
       </section>
 
       <aside className="px-editor__rail px-editor__rail--right">
-        <Inspector doc={doc} onChange={setDoc} />
+        {article ? (
+          <p className="px-help" style={{ margin: "0 0 var(--space-4)", padding: "var(--space-3)", borderLeft: "2px solid var(--color-brand-accent)", background: "var(--color-surface)", fontSize: "var(--text-caption-size)", color: "var(--color-text-secondary)", lineHeight: 1.5 }}>
+          Type the article once. Other Articles templates keep this copy when you switch to them,
+          and <strong>Export for every platform</strong> renders this design at all {ARTICLE_PACK.length} sizes.
+        </p>
+        ) : null}
+        <Inspector doc={doc} onChange={commit} />
         <ExportPanel
           nodeRef={nodeRef}
           doc={doc}
           docName={`${template.category}-${template.name}`}
           batchJobs={batchJobs}
           categoryLabel={categoryLabel}
+          pack={pack}
         />
       </aside>
     </div>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PageHead, Section, Table } from "@/components/site/ui";
-import { governance } from "@/lib/brand";
+import { accessibilityFloor, changePaths, governance, philosophy } from "@/lib/brand";
 
 export const metadata: Metadata = { title: "Governance" };
 
@@ -10,7 +10,7 @@ export default function GovernancePage() {
       <PageHead
         index="08 / GOVERNANCE"
         title="What holds the system together"
-        lede="A design system fails at the edges — the one-off colour, the exception made under deadline, the second icon set. These are the rules that do not bend, and the check that decides whether a screen ships."
+        lede={philosophy.governance}
       />
 
       <Section index="8.1" title="Rules">
@@ -27,27 +27,14 @@ export default function GovernancePage() {
       <Section index="8.2" title="Accessibility floor" lede="Not a target. A floor — below this, the work is not finished.">
         <Table
           head={["Requirement", "Standard"]}
-          rows={[
-            ["Contrast", "WCAG AA for every text-on-surface pair, in both themes"],
-            ["Focus", "2px viridian outline at 2px offset, never removed"],
-            ["Touch targets", "44px minimum"],
-            ["Markup", "Semantic HTML — headings in order, real buttons, labelled inputs"],
-            ["Motion", "prefers-reduced-motion honoured globally"],
-            ["Language", "lang set correctly for multilingual content"],
-          ]}
+          rows={accessibilityFloor.map((r) => [...r])}
         />
       </Section>
 
       <Section index="8.3" title="Changing the system" lede="The system is meant to change. It is not meant to drift.">
         <Table
           head={["Change", "Path"]}
-          rows={[
-            ["New colour", "Token proposal. It must be justified against the existing ramps and pass AA in both themes."],
-            ["New component", "Built from existing tokens, documented with usage and states, added to the component index."],
-            ["New template", "Added to the editor's registry as a preset over an existing layout — not as a bespoke design."],
-            ["Typeface change", "Swap the self-hosted files and the three family tokens. Nothing else should need to move."],
-            ["Exception", "Time-boxed and recorded. An exception that outlives its campaign becomes a token proposal or is removed."],
-          ]}
+          rows={changePaths.map((r) => [...r])}
         />
       </Section>
 

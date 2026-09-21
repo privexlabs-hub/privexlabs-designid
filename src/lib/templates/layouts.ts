@@ -1,6 +1,6 @@
 import type { FieldDef, LayoutId } from "./types";
 
-const eyebrow: FieldDef = { key: "eyebrow", label: "Category label", kind: "text", help: "Mono, uppercase. \"01 / RESEARCH\"." };
+const eyebrow: FieldDef = { key: "eyebrow", label: "Category label", kind: "text", help: "Mono, uppercase. \"01 / AI ENGINEERING\"." };
 const index: FieldDef = { key: "index", label: "Index / ID", kind: "text", help: "Content ID or slide index. \"PXC-2026-041\"." };
 const headline: FieldDef = { key: "headline", label: "Headline", kind: "textarea" };
 const subhead: FieldDef = { key: "subhead", label: "Subhead", kind: "textarea" };
@@ -17,7 +17,17 @@ export const LAYOUT_LABELS: Record<LayoutId, string> = {
   avatar: "Avatar", carousel: "Carousel slide", email: "Email block", web: "Web section",
   cta: "Call to action", event: "Event", offer: "Offer", caseStudy: "Case study",
   meme: "Lighthearted", hiring: "Hiring",
+  article: "Article cover", articleQuote: "Article pull quote", articleStat: "Article key figure",
 };
+
+/* Article fields share keys, so copy typed on one article template carries to the next. */
+const articleTitle: FieldDef = { key: "headline", label: "Article title", kind: "textarea", help: "Sentence case. The size fits itself to every canvas." };
+const byline: FieldDef[] = [
+  { key: "author", label: "Author", kind: "text", help: "Leave empty for a byline-free cover." },
+  { key: "role", label: "Author role", kind: "text" },
+  { key: "date", label: "Publish date", kind: "text" },
+  { key: "readTime", label: "Read time", kind: "text", help: "\"8 min read\"." },
+];
 
 /** Which editable fields each layout consumes, in inspector order. */
 export const LAYOUT_FIELDS: Record<LayoutId, FieldDef[]> = {
@@ -46,6 +56,22 @@ export const LAYOUT_FIELDS: Record<LayoutId, FieldDef[]> = {
   caseStudy: [eyebrow, index, { key: "client", label: "Client", kind: "text" }, headline, { key: "leftTitle", label: "Challenge title", kind: "text" }, { key: "leftBody", label: "Challenge", kind: "textarea" }, { key: "rightTitle", label: "Result title", kind: "text" }, { key: "rightBody", label: "Result", kind: "textarea" }, { ...items, label: "Outcome metrics", help: "One per line as \"figure — label\"." }, cta, url],
   meme: [eyebrow, headline, subhead, body, cta],
   hiring: [eyebrow, index, { key: "role", label: "Role", kind: "text" }, headline, subhead, { ...items, label: "Details", help: "One per line as \"label — value\"." }, { key: "cta", label: "Button label", kind: "text" }, url],
+  article: [
+    { ...eyebrow, help: "Area and article type. \"03 / AI MODELS · RESEARCH\"." }, index,
+    { key: "series", label: "Series badge", kind: "text", help: "Optional. \"PART 02 / 05\"." },
+    articleTitle, { key: "subhead", label: "Subtitle", kind: "textarea" }, ...byline, url,
+  ],
+  articleQuote: [
+    eyebrow, index, { key: "quote", label: "Pull quote", kind: "textarea", help: "A line from the article, verbatim." },
+    articleTitle, ...byline, url,
+  ],
+  articleStat: [
+    eyebrow, index, { key: "value", label: "Figure", kind: "text" },
+    { key: "unit", label: "Figure suffix", kind: "text", help: "Rendered muted — \"/6\", \"%\", \"×\"." },
+    { key: "claim", label: "What the figure means", kind: "textarea" },
+    { key: "source", label: "Sample / source", kind: "text", help: "A figure without its sample size does not ship." },
+    articleTitle, ...byline, url,
+  ],
 };
 
 /** Split "left — right" list entries into a labelled pair. */

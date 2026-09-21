@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { DoDont, PageHead, Section, Table } from "@/components/site/ui";
-import { motionScale } from "@/lib/brand";
+import { discipline, interactionStates, motionScale, philosophy } from "@/lib/brand";
 
 export const metadata: Metadata = { title: "Motion" };
 
@@ -10,7 +10,7 @@ export default function MotionPage() {
       <PageHead
         index="05 / MOTION"
         title="Motion communicates system behaviour"
-        lede="Movement in this system reports what the software is doing — a state changed, a panel revealed, data moved along a path. It is never atmosphere. Three durations, three curves, and nothing that loops."
+        lede={philosophy.motion}
       />
 
       <Section index="5.1" title="Durations and curves">
@@ -20,13 +20,7 @@ export default function MotionPage() {
       <Section index="5.2" title="Interaction states">
         <Table
           head={["State", "Behaviour"]}
-          rows={[
-            ["Hover", "Darker fill — primary moves to viridian 700; surfaces move to muted. Links underline."],
-            ["Press", "Darker still. No scale, no lift."],
-            ["Focus", "2px viridian outline at 2px offset. Always visible, never removed."],
-            ["Reveal", "Fade with a 4–8px translate over 200ms."],
-            ["Structural", "Fade with an 8px translate over 320ms."],
-          ]}
+          rows={interactionStates.map((r) => [...r])}
         />
       </Section>
 
@@ -42,20 +36,7 @@ export default function MotionPage() {
       </Section>
 
       <Section index="5.4" title="Discipline">
-        <DoDont
-          dos={[
-            "Animate the property that changed, and nothing else",
-            "Use ease-flow only for data moving along a diagram path",
-            "Keep entrances under 320ms",
-            "Test every screen with reduced motion enabled",
-          ]}
-          donts={[
-            "Parallax, particles, floating or looping ambient motion",
-            "Scale or lift on press",
-            "Animate a page on every scroll position",
-            "Use motion to hide a slow response",
-          ]}
-        />
+        <DoDont dos={discipline.motion.dos} donts={discipline.motion.donts} />
       </Section>
     </>
   );

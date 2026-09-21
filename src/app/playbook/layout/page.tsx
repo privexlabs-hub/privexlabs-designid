@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { DoDont, Grid, PageHead, Section, Table } from "@/components/site/ui";
-import { containers, motifRules, radiusScale, spacingScale } from "@/lib/brand";
+import {
+  containers, diagramSpec, discipline, gridSpec, motifRules,
+  philosophy, radiusScale, spacingScale,
+} from "@/lib/brand";
 
 export const metadata: Metadata = { title: "Layout & structure" };
 
@@ -10,7 +13,7 @@ export default function LayoutPage() {
       <PageHead
         index="04 / LAYOUT & STRUCTURE"
         title="Structure carried by lines, not shadows"
-        lede="The system is architectural. A 1px divider does the work a drop shadow would do elsewhere. Corners are barely rounded, cards sit flat at rest, and the grid is visible in the alignment rather than in decoration."
+        lede={philosophy.layout}
       />
 
       <Section index="4.1" title="Spacing — 4px base">
@@ -34,12 +37,7 @@ export default function LayoutPage() {
         <div style={{ marginTop: "var(--space-5)" }}>
           <Table
             head={["Property", "Value"]}
-            rows={[
-              ["Columns", "12"],
-              ["Gutter", "24px — var(--grid-gutter)"],
-              ["Margin", "32px — var(--grid-margin)"],
-              ["Breakpoints", "480 / 768 / 1080 / 1440"],
-            ]}
+            rows={gridSpec.map((r) => [...r])}
           />
         </div>
       </Section>
@@ -68,31 +66,12 @@ export default function LayoutPage() {
       <Section index="4.6" title="Diagrams" lede="Diagrams are part of the identity, not illustrations dropped into it.">
         <Table
           head={["Property", "Specification"]}
-          rows={[
-            ["Line weight", "1.5px"],
-            ["Nodes", "Squares with a 4px radius"],
-            ["Connectors", "Orthogonal only — no curves, no diagonals"],
-            ["Labels", "IBM Plex Mono, uppercase, muted"],
-            ["Active path", "Viridian"],
-            ["Signals and annotations", "Brass"],
-          ]}
+          rows={diagramSpec.map((r) => [...r])}
         />
       </Section>
 
       <Section index="4.7" title="Responsive behaviour">
-        <DoDont
-          dos={[
-            "Stack pillar grids to a single column below 768px",
-            "Let dashboard tables scroll horizontally inside their own container",
-            "Hold the editorial column at 680px on every viewport",
-            "Keep touch targets at 44px",
-          ]}
-          donts={[
-            "Scale a desktop layout down and call it mobile",
-            "Hide structural dividers to save vertical space",
-            "Let the page body scroll horizontally",
-          ]}
-        />
+        <DoDont dos={discipline.layout.dos} donts={discipline.layout.donts} />
       </Section>
     </>
   );

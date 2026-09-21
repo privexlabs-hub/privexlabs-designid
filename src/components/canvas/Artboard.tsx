@@ -1,7 +1,8 @@
-import type { CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
+import { ArticleFrame } from "./ArticleFrame";
 import { FONT_MONO, FONT_SANS, FONT_SERIF, P, skinFor, type Skin } from "@/lib/palette";
 import { splitItem } from "@/lib/templates/layouts";
-import type { CanvasSize, Doc } from "@/lib/templates/types";
+import { isArticleLayout, type CanvasSize, type Doc } from "@/lib/templates/types";
 import { Label, Lockup, Mark, Node, RegMarks, Wordmark } from "./primitives";
 
 type Ctx = {
@@ -82,7 +83,11 @@ function Figure({ ctx, value, unit, size = 200 }: { ctx: Ctx; value?: string; un
       fontFamily: FONT_MONO, fontSize: ctx.t(size), lineHeight: 1, fontWeight: 600,
       color: ctx.skin.dark ? ctx.skin.brandInk : P.viridian600, fontVariantNumeric: "tabular-nums", letterSpacing: "-0.02em",
     }}>
-      {v}{clean(unit) ? <span style={{ color: ctx.skin.muted }}>{clean(unit)}</span> : null}
+      {/* A suffix typed as " weeks" wants a gap. A literal space in Plex Mono is a full
+          character wide at display size, so the space becomes a proportional margin instead. */}
+      {v}{clean(unit) ? (
+        <span style={{ color: ctx.skin.muted, marginLeft: /^\s/.test(unit ?? "") ? "0.22em" : undefined }}>{clean(unit)}</span>
+      ) : null}
     </div>
   );
 }
@@ -590,6 +595,27 @@ function BannerFrame(ctx: Ctx) {
 
 function AvatarFrame(ctx: Ctx) {
   const { doc, size, skin, t } = ctx;
+  if (doc.photo) {
+    // Platforms crop avatars to a circle, so the mark badge sits inside the inscribed circle.
+    const tile = Math.round(size.w * 0.22);
+    const r = size.w / 2;
+    const offset = Math.round(r + r * 0.44 - tile / 2);
+    return (
+      <div style={{ position: "absolute", inset: 0, background: skin.bg }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={doc.photo} alt="" width={size.w} height={size.h} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+        {doc.logo !== "none" ? (
+          <span style={{
+            position: "absolute", left: offset, top: offset, width: tile, height: tile,
+            background: P.foundation, borderRadius: Math.round(tile * 0.18),
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <Mark size={Math.round(tile * 0.72)} stroke="#3FA98D" node="#D8A945" />
+          </span>
+        ) : null}
+      </div>
+    );
+  }
   const initials = clean(doc.text.headline);
   const rings = doc.showMarks;
   const markSize = Math.round(size.w * 0.44);
@@ -612,7 +638,29 @@ function AvatarFrame(ctx: Ctx) {
 
 /* -------------------------------------------------------------- artboard */
 
+/** Faces the fitted article text is measured in. */
+const MEASURED_FACES = ['700 40px "Archivo"', '600 40px "Archivo"', '400 40px "Archivo"', '500 40px "Newsreader"', '600 40px "IBM Plex Mono"'];
+
+/**
+ * Re-renders once the self-hosted faces are loaded, so text fitted with canvas metrics is
+ * measured in the real font rather than a fallback. Existing layouts ignore it.
+ */
+function useFontsLoaded() {
+  const [, bump] = useState(0);
+  useEffect(() => {
+    const fonts = typeof document !== "undefined" ? document.fonts : undefined;
+    if (!fonts) return;
+    let alive = true;
+    const refresh = () => { if (alive) bump((n) => n + 1); };
+    Promise.all(MEASURED_FACES.map((f) => fonts.load(f))).then(refresh, refresh);
+    fonts.addEventListener("loadingdone", refresh);
+    return () => { alive = false; fonts.removeEventListener("loadingdone", refresh); };
+  }, []);
+}
+
 export function Artboard({ doc, size }: { doc: Doc; size: CanvasSize }) {
+  useFontsLoaded();
+  if (isArticleLayout(doc.layout)) return <ArticleFrame doc={doc} size={size} />;
   const skin = skinFor(doc.surface, doc.accent);
   // Type scales with the canvas, but a wide, short canvas is bound by its height —
   // otherwise a 1600×400 banner sets headlines that cannot fit between its margins.
@@ -648,7 +696,7 @@ export function Artboard({ doc, size }: { doc: Doc; size: CanvasSize }) {
 
   return (
     <div style={frame}>
-      {doc.showMarks ? <RegMarks pad={pad} skin={skin} w={size.w} h={size.h} /> : null}
+      {doc.showMarks ? <RegMarks pad={pad} skin={skin} /> : null}
       {doc.layout === "thumbnail" ? (
         ThumbnailFrame(ctx)
       ) : doc.layout === "banner" ? (

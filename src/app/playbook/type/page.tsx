@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
 import { DoDont, Note, PageHead, Section, Table } from "@/components/site/ui";
-import { typeScale } from "@/lib/brand";
+import { casingRules, discipline, philosophy, typeScale, typefaces } from "@/lib/brand";
 import { FONT_MONO, FONT_SANS, FONT_SERIF } from "@/lib/palette";
 
 export const metadata: Metadata = { title: "Typography" };
 
 const FAMILY_STYLE = { sans: FONT_SANS, serif: FONT_SERIF, mono: FONT_MONO } as const;
+
+/** How each family is set on this page. The families themselves live in brand.ts. */
+const SPECIMEN: Record<string, { family: string; sample: string }> = {
+  "Archivo": { family: FONT_SANS, sample: "Build. Deploy. Own AI." },
+  "Newsreader": { family: FONT_SERIF, sample: "What we tested, and what we measured" },
+  "IBM Plex Mono": { family: FONT_MONO, sample: "03 / AI MODELS · PXR-2026-07" },
+};
 
 export default function TypePage() {
   return (
@@ -13,16 +20,12 @@ export default function TypePage() {
       <PageHead
         index="03 / TYPOGRAPHY"
         title="Three families, one rhythm"
-        lede="Archivo carries the interface and the headlines. Newsreader is the editorial voice of the Knowledge pillar and nothing else. IBM Plex Mono handles code, data and every annotation. The recurring rhythm is a mono uppercase label, an Archivo headline, and generous space beneath."
+        lede={philosophy.type}
       />
 
       <Section index="3.1" title="Families">
         <div className="px-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
-          {[
-            { name: "Archivo", family: FONT_SANS, role: "UI and headings", sample: "Private AI, built on your data", detail: "Grotesque, technical, wide Latin coverage. Weights 400–800." },
-            { name: "Newsreader", family: FONT_SERIF, role: "Editorial — Knowledge only", sample: "What we tested, and where it failed", detail: "Research titles, pull quotes, long-form. Weights 400–600 plus italics." },
-            { name: "IBM Plex Mono", family: FONT_MONO, role: "Code, data, labels", sample: "01 / RESEARCH · MODEL v2.3", detail: "Annotations, tabular figures, code. Weights 400–600." },
-          ].map((f) => (
+          {typefaces.map((t) => ({ ...t, ...SPECIMEN[t.name] })).map((f) => (
             <div key={f.name} className="px-card">
               <span className="px-label">{f.role}</span>
               <div style={{ fontFamily: f.family, fontSize: 30, lineHeight: 1.2, marginTop: "var(--space-4)", fontWeight: 600 }}>{f.name}</div>
@@ -34,7 +37,7 @@ export default function TypePage() {
         <div style={{ marginTop: "var(--space-5)" }}>
           <Note>
             These are substitutions. No proprietary font files were supplied, so the system standardises on three
-            open families chosen for technical credibility and wide Latin coverage for African languages. They are
+            open families chosen for technical credibility and wide Latin coverage. They are
             self-hosted as woff2 under <code>/fonts</code> — which is also what lets the editor embed them into exported images.
             If PrivexLabs licenses typefaces, this layer swaps in place.
           </Note>
@@ -57,7 +60,7 @@ export default function TypePage() {
                 fontWeight: t.weight ? Number(t.weight) : 400,
                 textTransform: t.name === "Label" ? "uppercase" : undefined,
               }}>
-                {t.name === "Label" ? "01 / RESEARCH" : t.name === "Data" ? "99.97%" : t.name === "Code" ? "privex deploy --region ke-1" : "We tested six. Two were usable."}
+                {t.name === "Label" ? "01 / AI ENGINEERING" : t.name === "Data" ? "0.91" : t.name === "Code" ? "evaluate --set PXR-2026-07 --blind" : "We tested six. Two were usable."}
               </div>
               <p style={{ fontSize: "var(--text-body-sm-size)", color: "var(--color-text-secondary)", maxWidth: "68ch" }}>{t.use}</p>
             </div>
@@ -68,31 +71,12 @@ export default function TypePage() {
       <Section index="3.3" title="Casing">
         <Table
           head={["Context", "Casing"]}
-          rows={[
-            ["Headlines, subheads, body", "Sentence case"],
-            ["Buttons and navigation", "Sentence case"],
-            ["Mono annotations and index labels", "ALL-CAPS — the only place it is permitted"],
-            ["Product and model names", "As registered — PrivexBot Docs, MODEL v2.3"],
-          ]}
+          rows={casingRules.map((r) => [...r])}
         />
       </Section>
 
       <Section index="3.4" title="Discipline">
-        <DoDont
-          dos={[
-            "Lead Knowledge pages with Newsreader; keep product and infrastructure to Archivo and Plex Mono",
-            "Use tabular figures for anything in a column",
-            "Keep the editorial column at 680px regardless of viewport",
-            "Set headlines at two lines or fewer",
-          ]}
-          donts={[
-            "Title Case anything",
-            "Use Newsreader outside the Knowledge pillar",
-            "Exceed 56px display type",
-            "Mix a fourth family in, including icon fonts",
-            "Use emoji as typographic ornament",
-          ]}
-        />
+        <DoDont dos={discipline.type.dos} donts={discipline.type.donts} />
       </Section>
     </>
   );

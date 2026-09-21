@@ -8,12 +8,12 @@ export default function ComponentsPage() {
   return (
     <>
       <PageHead
-        index="10 / COMPONENTS"
+        index="09 / COMPONENTS"
         title="The library, live"
         lede="Twenty-one components across core, forms, data, navigation and the Privex-specific set. Every one is built from tokens — there is no hardcoded colour or size in the library, which is why a token change propagates without a redesign."
       />
 
-      <Section index="10.1" title="Library">
+      <Section index="9.1" title="Library">
         <Note>
           Ported from the design system&rsquo;s <code>components/</code> folder to typed React. Behaviour and token
           usage are unchanged; the runtime style injection became a stylesheet, and class names carry a

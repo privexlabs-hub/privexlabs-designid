@@ -31,6 +31,16 @@ export const SIZES: CanvasSize[] = [
   { id: "web-hero", label: "Web hero · 1600×900", w: 1600, h: 900, group: "Web" },
   { id: "web-section", label: "Web section · 1200×800", w: 1200, h: 800, group: "Web" },
   { id: "web-banner", label: "Web banner · 1600×400", w: 1600, h: 400, group: "Web" },
+  // Article covers. LinkedIn and Substack figures are from their own help centres; X
+  // recommends a 5:2 aspect ratio for article images; DEV and Hashnode are their documented
+  // ratios; Medium publishes no pixel spec ("a wide horizontal rectangle"), so 1200×680 is
+  // the commonly recommended size rather than an official one.
+  { id: "medium-cover", label: "Medium story cover · 1200×680", w: 1200, h: 680, group: "Articles" },
+  { id: "linkedin-article", label: "LinkedIn article / newsletter cover · 1920×1080", w: 1920, h: 1080, group: "Articles" },
+  { id: "link-card", label: "X / LinkedIn link card · 1200×628", w: 1200, h: 628, group: "Articles" },
+  { id: "x-article", label: "X article cover · 1500×600 (5:2)", w: 1500, h: 600, group: "Articles" },
+  { id: "devto-cover", label: "DEV cover · 1000×420", w: 1000, h: 420, group: "Articles" },
+  { id: "hashnode-cover", label: "Hashnode cover · 1600×840", w: 1600, h: 840, group: "Articles" },
 ];
 
 export const SIZE_BY_ID: Record<string, CanvasSize> = Object.fromEntries(SIZES.map((s) => [s.id, s]));
@@ -52,7 +62,26 @@ export type LayoutId =
   | "statement" | "stat" | "quote" | "testimonial" | "split" | "list" | "steps"
   | "metrics" | "diagram" | "feature" | "profile" | "faq" | "poll" | "thumbnail"
   | "banner" | "avatar" | "carousel" | "email" | "web" | "cta" | "event"
-  | "offer" | "caseStudy" | "meme" | "hiring";
+  | "offer" | "caseStudy" | "meme" | "hiring"
+  | "article" | "articleQuote" | "articleStat";
+
+export const ARTICLE_LAYOUTS: LayoutId[] = ["article", "articleQuote", "articleStat"];
+export const isArticleLayout = (layout: LayoutId) => ARTICLE_LAYOUTS.includes(layout);
+
+/** Every size an article design is exported at by "Export for every platform". */
+export const ARTICLE_PACK: { sizeId: string; platform: string }[] = [
+  { sizeId: "medium-cover", platform: "Medium story cover" },
+  { sizeId: "linkedin-article", platform: "LinkedIn article or newsletter cover" },
+  { sizeId: "link-card", platform: "X and LinkedIn link card" },
+  { sizeId: "x-article", platform: "X article cover, 5:2" },
+  { sizeId: "og", platform: "Substack and blog share, Open Graph" },
+  { sizeId: "devto-cover", platform: "DEV cover" },
+  { sizeId: "hashnode-cover", platform: "Hashnode cover" },
+  { sizeId: "newsletter-header", platform: "Newsletter header" },
+  { sizeId: "square", platform: "Square promo, LinkedIn and Instagram" },
+  { sizeId: "portrait", platform: "Portrait promo, LinkedIn and Instagram" },
+  { sizeId: "vertical", platform: "Story promo, Instagram and LinkedIn" },
+];
 
 export type FieldKind = "text" | "textarea" | "list";
 
@@ -77,6 +106,12 @@ export type Doc = {
   showRule: boolean;
   text: Record<string, string>;
   items: string[];
+  /** Article layouts only. Newsreader is for long-form writing and quotations. */
+  titleFont?: "sans" | "serif";
+  /** Article cover only — the hairline grid and signal-trace panel. */
+  showMotif?: boolean;
+  /** Author photo for article bylines and the photo avatar, as a downscaled data URL. */
+  photo?: string;
 };
 
 export type TemplateDef = {
@@ -92,6 +127,8 @@ export type TemplateDef = {
   showMarks?: boolean;
   showFooter?: boolean;
   showRule?: boolean;
+  titleFont?: "sans" | "serif";
+  showMotif?: boolean;
   text: Record<string, string>;
   items?: string[];
 };
@@ -110,4 +147,5 @@ export const CATEGORIES: Category[] = [
   { id: "ads", name: "Ads", blurb: "Paid placements. Claim, proof, one action." },
   { id: "email", name: "Email", blurb: "Headers, announcement blocks and CTA banners for campaigns." },
   { id: "web", name: "Web", blurb: "Heroes, sections, banners and share cards for privexlabs.com." },
+  { id: "articles", name: "Articles", blurb: "Covers and share cards for anything we publish. Type the title once, then export it for Medium, LinkedIn, X, Substack, DEV, Hashnode and the newsletter." },
 ];

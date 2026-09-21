@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AssetLibrary } from "@/components/site/AssetLibrary";
 import { Note, PageHead, Section, Table } from "@/components/site/ui";
+import { assetUsage, philosophy } from "@/lib/brand";
 
 export const metadata: Metadata = { title: "Assets" };
 
@@ -8,27 +9,19 @@ export default function AssetsPage() {
   return (
     <>
       <PageHead
-        index="09 / ASSETS"
+        index="11 / ASSETS"
         title="Every identity file, in one place"
-        lede="Logos, marks, wordmarks, favicons and avatars — as vector originals and pre-rendered rasters. Download one file, or take the whole library as a zip."
+        lede={philosophy.assets}
       />
 
-      <Section index="9.1" title="Library">
+      <Section index="11.1" title="Library">
         <AssetLibrary />
       </Section>
 
-      <Section index="9.2" title="Which file to use">
+      <Section index="11.2" title="Which file to use">
         <Table
           head={["Context", "File"]}
-          rows={[
-            ["Website header, light", "logo.svg"],
-            ["Website header, dark", "logo-dark.svg"],
-            ["Print, engraving, watermark", "logo-mono.svg — set colour via currentColor"],
-            ["App icon, favicon at 24px and below", "favicon.svg, or the 32 / 180 / 192 / 512 PNGs"],
-            ["Social profile picture", "avatar-brand.svg — or the ink, white, campaign, mono and inverted variants"],
-            ["Slide corner, dense UI", "mark.svg at 20px minimum"],
-            ["Pillar lockup", "wordmark.svg plus a mono pillar label — never a separate symbol"],
-          ]}
+          rows={assetUsage.map((r) => [...r])}
         />
         <div style={{ marginTop: "var(--space-5)" }}>
           <Note>

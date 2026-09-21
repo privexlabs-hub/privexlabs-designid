@@ -13,8 +13,8 @@ export type BatchJob = { name: string; doc: Doc };
 type Progress = { done: number; total: number; label: string } | null;
 
 /**
- * Renders each batch artboard off-screen at full size, one at a time, so a 130-item
- * export never holds more than one artboard in the DOM.
+ * Renders each batch artboard off-screen at full size, one at a time, so an export of the
+ * whole catalogue never holds more than one artboard in the DOM.
  */
 function BatchRunner({ jobs, options, zipName, onDone, onProgress }: {
   jobs: BatchJob[];
@@ -69,12 +69,14 @@ function BatchRunner({ jobs, options, zipName, onDone, onProgress }: {
   );
 }
 
-export function ExportPanel({ nodeRef, doc, docName, batchJobs, categoryLabel }: {
+export function ExportPanel({ nodeRef, doc, docName, batchJobs, categoryLabel, pack }: {
   nodeRef: RefObject<HTMLDivElement | null>;
   doc: Doc;
   docName: string;
   batchJobs: { category: BatchJob[]; all: BatchJob[] };
   categoryLabel: string;
+  /** Article designs only: the current design at every platform size. */
+  pack?: { platforms: string[]; jobs: BatchJob[] };
 }) {
   const [opts, setOpts] = useState<ExportOptions>(DEFAULT_EXPORT);
   const [busy, setBusy] = useState(false);
@@ -162,6 +164,11 @@ export function ExportPanel({ nodeRef, doc, docName, batchJobs, categoryLabel }:
           <button type="button" className="px-btn" onClick={exportOne} disabled={busy}>
             Download this artboard
           </button>
+          {pack ? (
+            <button type="button" className="px-btn" onClick={() => startBatch(pack.jobs, `${slugify(docName)}-every-platform.zip`)} disabled={busy}>
+              Export for every platform — {pack.jobs.length} sizes (.zip)
+            </button>
+          ) : null}
           <button type="button" className="px-btn px-btn--secondary" onClick={exportEveryFormat} disabled={busy}>
             Download in every format (.zip)
           </button>
@@ -187,9 +194,20 @@ export function ExportPanel({ nodeRef, doc, docName, batchJobs, categoryLabel }:
 
         {error ? <p style={{ marginTop: "var(--space-3)", color: "var(--color-danger)", fontSize: "var(--text-body-sm-size)" }}>{error}</p> : null}
 
+        {pack ? (
+          <details style={{ marginTop: "var(--space-4)", fontSize: "var(--text-caption-size)", color: "var(--color-text-secondary)" }}>
+            <summary style={{ cursor: "pointer" }}>What &ldquo;every platform&rdquo; includes</summary>
+            <ul style={{ margin: "var(--space-2) 0 0", paddingLeft: "var(--space-5)", display: "grid", gap: 2 }}>
+              {pack.jobs.map((j, i) => (
+                <li key={j.doc.sizeId}>{pack.platforms[i]} · {SIZE_BY_ID[j.doc.sizeId].w}×{SIZE_BY_ID[j.doc.sizeId].h}</li>
+              ))}
+            </ul>
+          </details>
+        ) : null}
+
         <p style={{ marginTop: "var(--space-4)", fontSize: "var(--text-caption-size)", color: "var(--color-text-muted)" }}>
-          Batch exports render every artboard at full size, one at a time. A 130-item run takes a few minutes —
-          keep this tab in the foreground while it works.
+          Batch exports render every artboard at full size, one at a time. A full {batchJobs.all.length}-template
+          run takes a few minutes — keep this tab in the foreground while it works.
         </p>
       </div>
 

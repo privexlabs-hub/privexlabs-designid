@@ -181,3 +181,46 @@ code, pre { font-family: var(--font-mono); font-size: var(--text-code-size); }
   .px-editor__rail--right { border-left: 0; border-top: var(--border-hairline); max-height: none; }
   .px-editor__viewport { padding: var(--space-4); }
 }
+
+/* ---- brand brief ----------------------------------------------------- */
+
+.px-pack-bar {
+  display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap;
+  padding: var(--space-4); border: var(--border-default); border-radius: var(--radius-2);
+  background: var(--color-surface-elevated);
+}
+
+.px-pack-index { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.px-pack-index a {
+  font-family: var(--font-mono); font-size: var(--text-caption-size);
+  border: 1px solid var(--color-border); border-radius: var(--radius-1);
+  padding: 5px 9px; color: var(--color-text-secondary); text-decoration: none;
+}
+.px-pack-index a:hover { background: var(--color-surface-muted); color: var(--color-text-primary); text-decoration: none; }
+
+.px-pack-sec {
+  border-top: 1px solid var(--color-divider);
+  padding-top: var(--space-5); margin-top: var(--space-7);
+  scroll-margin-top: 80px;
+}
+.px-pack-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-4);
+}
+
+/* The copy buttons put exactly this text on the clipboard — one rendering path only. */
+.px-pack {
+  margin: 0;
+  background: var(--color-surface-elevated);
+  border: var(--border-default);
+  border-radius: var(--radius-2);
+  padding: var(--space-5);
+  max-height: 420px;
+  overflow: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-code-size);
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

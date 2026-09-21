@@ -91,7 +91,7 @@
   --text-code-size:0.84375rem;  --text-code-line:1.6;
   --text-data-size:1.75rem;     --text-data-line:1.1;  /* mono, tabular */
 
-  /* editorial serif display (Knowledge) */
+  /* editorial serif display (long-form) */
   --text-editorial-size:2.75rem; --text-editorial-line:1.12; --text-editorial-weight:500;
 }
 :root{

@@ -1,6 +1,10 @@
 "use client";
 
 import { getFontEmbedCSS, toCanvas, toSvg } from "html-to-image";
+import { downloadBlob, slugify } from "./download";
+
+// Re-exported so existing callers keep importing these from here.
+export { downloadBlob, slugify };
 
 export type ExportFormat = "png" | "jpeg" | "webp" | "svg" | "pdf";
 
@@ -86,27 +90,6 @@ export async function renderNode(
   if (!blob) throw new Error("Rasterisation returned no data");
   if (blob.type !== mime) throw new Error(`This browser cannot encode ${opts.format.toUpperCase()}`);
   return { blob, ext: opts.format === "jpeg" ? "jpg" : opts.format };
-}
-
-export function slugify(input: string): string {
-  return input
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 72) || "artboard";
-}
-
-export function downloadBlob(blob: Blob, filename: string) {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  // Revoke on the next frame; revoking synchronously cancels the download in Safari.
-  setTimeout(() => URL.revokeObjectURL(url), 4000);
 }
 
 export async function downloadZip(entries: { name: string; blob: Blob }[], zipName: string) {

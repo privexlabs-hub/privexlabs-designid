@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { Grid, Section } from "@/components/site/ui";
-import { pillars } from "@/lib/brand";
+import { areas, company } from "@/lib/brand";
 import { TEMPLATES, TEMPLATES_BY_CATEGORY } from "@/lib/templates";
 
 const SECTIONS = [
+  { href: "/playbook/company", index: "00", title: "Company", blurb: "Who PrivexLabs is: the six areas of work, the problem-first approach, principles and positioning." },
   { href: "/playbook/logo", index: "01", title: "Logo & mark", blurb: "The boundary square, the signal trace, the brass node. Clear space, minimums, and the six things that are never done to it." },
   { href: "/playbook/color", index: "02", title: "Color", blurb: "Mineral & Signal — viridian as the owned hue, green-cast paper neutrals, brass as the single accent." },
   { href: "/playbook/type", index: "03", title: "Typography", blurb: "Archivo, Newsreader and IBM Plex Mono. Thirteen steps, sentence case, ALL-CAPS only in mono annotations." },
@@ -13,6 +14,8 @@ const SECTIONS = [
   { href: "/playbook/social", index: "07", title: "Social system", blurb: "One visual grammar across platforms, recognisable with the logo removed. Category treatments and the content lifecycle." },
   { href: "/playbook/governance", index: "08", title: "Governance", blurb: "Token discipline, accessibility floor, responsive rules, and the test before shipping." },
   { href: "/playbook/components", index: "09", title: "Components", blurb: "The live library — 21 components across core, forms, data, navigation and the Privex-specific set." },
+  { href: "/brand-brief", index: "10", title: "Brand brief", blurb: "The whole brand as one copy-pasteable document — for briefing a writer, an agency, or an external AI tool." },
+  { href: "/assets", index: "11", title: "Assets", blurb: "Every identity file — logos, marks, wordmarks, favicons and avatars — individually or as one zip." },
 ];
 
 export default function HomePage() {
@@ -37,20 +40,24 @@ export default function HomePage() {
         </div>
       </section>
 
-      <Section index="00 / ARCHITECTURE" title="Six pillars, one system" lede="Pillars are differentiated by treatment — surface, typeface emphasis, density — never by a separate palette or a separate logo.">
+      <Section index="00 / COMPANY" title={company.lead} lede={company.definition}>
+        <Link className="px-btn px-btn--secondary" href="/playbook/company">Read the company page</Link>
+      </Section>
+
+      <Section index="00 / ARCHITECTURE" title="Six areas of work, one system" lede="Areas are told apart by treatment — surface, typeface emphasis, density — never by a separate palette or a separate logo.">
         <Grid min={280}>
-          {pillars.map((p) => (
-            <div key={p.id} className="px-card">
-              <span className="px-label" style={{ color: "var(--color-brand-accent-ink)" }}>{p.index}</span>
-              <h3 style={{ marginTop: "var(--space-3)" }}>{p.name}</h3>
-              <p style={{ marginTop: "var(--space-2)", fontSize: "var(--text-body-sm-size)", color: "var(--color-text-secondary)" }}>{p.role}</p>
-              <p style={{ marginTop: "var(--space-3)", paddingTop: "var(--space-3)", borderTop: "1px solid var(--color-divider)", fontSize: "var(--text-body-sm-size)", color: "var(--color-text-muted)" }}>{p.treatment}</p>
+          {areas.map((a) => (
+            <div key={a.id} className="px-card">
+              <span className="px-label" style={{ color: "var(--color-brand-accent-ink)" }}>{a.eyebrow}</span>
+              <h3 style={{ marginTop: "var(--space-3)" }}>{a.name}</h3>
+              <p style={{ marginTop: "var(--space-2)", fontSize: "var(--text-body-sm-size)", color: "var(--color-text-secondary)" }}>{a.intro}</p>
+              <p style={{ marginTop: "var(--space-3)", paddingTop: "var(--space-3)", borderTop: "1px solid var(--color-divider)", fontSize: "var(--text-body-sm-size)", color: "var(--color-text-muted)" }}>{a.treatment}</p>
             </div>
           ))}
         </Grid>
       </Section>
 
-      <Section index="00 / CONTENTS" title="The playbook" lede="Eight sections. Each one states the rule, shows the specimen, and lists what is never done.">
+      <Section index="00 / CONTENTS" title="The playbook" lede={`${SECTIONS.length} sections. Each one states the rule, shows the specimen, and lists what is never done.`}>
         <Grid min={300}>
           {SECTIONS.map((s) => (
             <Link key={s.href} href={s.href} className="px-card" style={{ textDecoration: "none", color: "inherit", display: "block" }}>

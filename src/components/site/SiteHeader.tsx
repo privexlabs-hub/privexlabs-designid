@@ -7,6 +7,7 @@ import { P } from "@/lib/palette";
 
 const NAV = [
   { href: "/", label: "Overview" },
+  { href: "/playbook/company", label: "Company" },
   { href: "/playbook/logo", label: "Logo" },
   { href: "/playbook/color", label: "Color" },
   { href: "/playbook/type", label: "Type" },
@@ -16,6 +17,7 @@ const NAV = [
   { href: "/playbook/social", label: "Social system" },
   { href: "/playbook/governance", label: "Governance" },
   { href: "/playbook/components", label: "Components" },
+  { href: "/brand-brief", label: "Brand brief" },
   { href: "/assets", label: "Assets" },
   { href: "/editor", label: "Editor" },
 ];

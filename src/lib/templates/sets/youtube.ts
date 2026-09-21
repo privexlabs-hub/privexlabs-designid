@@ -1,36 +1,40 @@
+import { CASES } from "@/lib/examples";
 import type { TemplateDef } from "../types";
 
 const base = { category: "youtube", sizeId: "youtube", layout: "thumbnail" } as const;
 
-/** 1280×720. Written to read at 210px wide: three to five words, one figure. */
+/**
+ * 1280×720. Written to read at 210px wide: three to five words, one figure.
+ * The eyebrow here is a video-format label, not a category label.
+ */
 export const youtubeTemplates: TemplateDef[] = [
   {
     ...base, id: "yt-tutorial", name: "Thumbnail · Tutorial", surface: "foundation",
-    text: { eyebrow: "Tutorial", headline: "Fine-tune on\nyour own data", subhead: "Start to finish, on one GPU", value: "01", cta: "PRIVEXLABS.COM/ACADEMY" },
+    text: { eyebrow: "Tutorial", headline: "Customize a model\non your own data", subhead: "Start to finish, on one GPU", value: "01", cta: "PRIVEXLABS.COM/TRAINING" },
   },
   {
     ...base, id: "yt-howto", name: "Thumbnail · How-to", surface: "paper",
-    text: { eyebrow: "How-to", headline: "Build an\nevaluation set", subhead: "Five days that decide everything after", value: "", cta: "PRIVEXLABS.COM/ACADEMY" },
+    text: { eyebrow: "How-to", headline: "Build an\nevaluation set", subhead: "Five days that decide everything after", value: "", cta: "PRIVEXLABS.COM/TRAINING" },
   },
   {
     ...base, id: "yt-review", name: "Thumbnail · Review", surface: "foundation",
-    text: { eyebrow: "Review", headline: "Six models,\none language", subhead: "Two survived", value: "2/6", cta: "PRIVEXLABS.COM/RESEARCH" },
+    text: { eyebrow: "Review", headline: "Six models,\none task", subhead: "Two survived", value: "2/6", cta: "PRIVEXLABS.COM/RESEARCH" },
   },
   {
     ...base, id: "yt-product", name: "Thumbnail · Product", surface: "brand",
-    text: { eyebrow: "Product", headline: "PrivexBot Docs", subhead: "Answers that cite their source", value: "", cta: "PRIVEXLABS.COM/PRIVEXBOT" },
+    text: { eyebrow: "Product", headline: "PrivexBot", subhead: "Chatbots on your own knowledge base", value: "", cta: "PRIVEXLABS.COM/PRIVEXBOT" },
   },
   {
     ...base, id: "yt-feature", name: "Thumbnail · Feature", surface: "elevated",
-    text: { eyebrow: "Feature", headline: "Source-locked\nanswers", subhead: "No source, no answer", value: "v2.3", cta: "PRIVEXLABS.COM/CHANGELOG" },
+    text: { eyebrow: "Feature", headline: "Workspaces,\nmembers, roles", subhead: "Organise PrivexBot by team", value: "", cta: "PRIVEXLABS.COM/PRIVEXBOT" },
   },
   {
     ...base, id: "yt-hot-take", name: "Thumbnail · Hot take", surface: "foundation",
-    text: { eyebrow: "Opinion", headline: "Benchmarks\nlie to you", subhead: "If you do not work in English", value: "", cta: "PRIVEXLABS.COM/WRITING" },
+    text: { eyebrow: "Opinion", headline: "Benchmarks\nlie to you", subhead: "If they are not your documents", value: "", cta: "PRIVEXLABS.COM/WRITING" },
   },
   {
     ...base, id: "yt-interview", name: "Thumbnail · Interview", surface: "paper",
-    text: { eyebrow: "Interview", headline: "Amina Mwangi", subhead: "On evaluating what nobody has benchmarked", value: "", cta: "PRIVEXLABS.COM" },
+    text: { eyebrow: "Interview", headline: CASES.docReview.by.name, subhead: "On moving document review in-house", value: "", cta: "PRIVEXLABS.COM" },
   },
   {
     ...base, id: "yt-podcast", name: "Thumbnail · Podcast", surface: "foundation",
@@ -38,11 +42,11 @@ export const youtubeTemplates: TemplateDef[] = [
   },
   {
     ...base, id: "yt-launch", name: "Thumbnail · Launch", surface: "brand",
-    text: { eyebrow: "Launch", headline: "Cluster LG-1\nis live", subhead: "Private inference in Lagos", value: "", cta: "PRIVEXLABS.COM/INFRASTRUCTURE" },
+    text: { eyebrow: "Launch", headline: "AI training for\nevery team", subhead: "Business, technical and leadership tracks", value: "", cta: "PRIVEXLABS.COM/TRAINING" },
   },
   {
     ...base, id: "yt-announcement", name: "Thumbnail · Announcement", surface: "elevated",
-    text: { eyebrow: "Announcement", headline: "An open Amharic\nevaluation set", subhead: "With Addis Ababa University", value: "", cta: "PRIVEXLABS.COM/NEWS" },
+    text: { eyebrow: "Announcement", headline: "Private AI for\nclinical teams", subhead: "A new hospital-network partnership", value: "", cta: "PRIVEXLABS.COM/NEWS" },
   },
   {
     ...base, id: "yt-case-study", name: "Thumbnail · Case study", surface: "paper",

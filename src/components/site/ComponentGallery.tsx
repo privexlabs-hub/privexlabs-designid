@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { CAST, RD } from "@/lib/examples";
 import {
   Badge, Breadcrumb, Button, Callout, Card, CodeBlock, DataTable, Field, Input,
   MetricGrid, ModelCard, ProductLifecycle, ResearchCard, Select, SiteHeader, Stat,
@@ -23,9 +24,9 @@ function Bench({ index, name, note, children }: { index: string; name: string; n
 }
 
 const EVAL_ROWS = [
-  { model: "Adapted 8B", lang: "Swahili", acc: "0.91", p95: "310 ms" },
-  { model: "Prompted 70B", lang: "Swahili", acc: "0.73", p95: "1,980 ms" },
-  { model: "Adapted 8B", lang: "Amharic", acc: "0.84", p95: "330 ms" },
+  { model: "Customized 8B", lang: "Loan-file review", acc: "0.91", p95: "310 ms" },
+  { model: "Prompted 70B", lang: "Loan-file review", acc: "0.73", p95: "1,980 ms" },
+  { model: "Customized 8B", lang: "Invoice extraction", acc: "0.84", p95: "330 ms" },
 ];
 
 export function ComponentGallery() {
@@ -45,7 +46,7 @@ export function ComponentGallery() {
       <Bench index="C.02" name="Badge" note="Mono, uppercase, the only pill in the system. Seven tones, all in-family.">
         <Badge>Draft</Badge>
         <Badge tone="brand">Pilot</Badge>
-        <Badge tone="accent">Model v2.3</Badge>
+        <Badge tone="accent">Model v1.2</Badge>
         <Badge tone="success" dot>Operational</Badge>
         <Badge tone="warning" dot>Degraded</Badge>
         <Badge tone="danger" dot>Stopped</Badge>
@@ -53,15 +54,15 @@ export function ComponentGallery() {
       </Bench>
 
       <Bench index="C.03" name="Tag" note="Sentence-case filter chips. Active state is viridian on the lightest tint.">
-        <Tag active>Swahili</Tag>
-        <Tag>Amharic</Tag>
-        <Tag>Hausa</Tag>
-        <Tag>Yoruba</Tag>
+        <Tag active>Financial services</Tag>
+        <Tag>Healthcare</Tag>
+        <Tag>Logistics</Tag>
+        <Tag>Public sector</Tag>
       </Bench>
 
       <Bench index="C.04" name="Card" note="1px border on an elevated surface, no shadow at rest. Shadow appears only when interactive.">
-        <Card label="Research" index="PXR-2026-07" title="Swahili document extraction" style={{ maxWidth: 340 }} footer={<span className="px-label">1,240 DOCUMENTS · 4 INSTITUTIONS</span>}>
-          <p style={{ fontSize: 14, color: "var(--color-text-secondary)" }}>Six models evaluated. Two were usable before adaptation.</p>
+        <Card label="Research" index={RD.evaluation.id} title="Document extraction evaluation" style={{ maxWidth: 340 }} footer={<span className="px-label">1,240 DOCUMENTS · 4 ORGANIZATIONS</span>}>
+          <p style={{ fontSize: 14, color: "var(--color-text-secondary)" }}>Six models evaluated. Two were usable without customization.</p>
         </Card>
         <Card interactive label="Interactive" index="HOVER" title="Hover for elevation" style={{ maxWidth: 300 }}>
           <p style={{ fontSize: 14, color: "var(--color-text-secondary)" }}>Elevation is the exception, not the structure.</p>
@@ -71,16 +72,16 @@ export function ComponentGallery() {
       <Bench index="C.05" name="Callout" note="Four functional tones, all muted and green-cast.">
         <div style={{ display: "grid", gap: "var(--space-3)", width: "100%", maxWidth: 620 }}>
           <Callout tone="info" title="Note">Adaptation runs inside your environment. The weights stay yours.</Callout>
-          <Callout tone="success" title="Operational">Inference cluster LG-1 — 99.97% uptime over 30 days.</Callout>
-          <Callout tone="warning" title="Deprecation">The legacy /v1 retrieval endpoint is removed on 30 June.</Callout>
+          <Callout tone="success" title="Complete">Reindex complete. 1,240 documents searchable.</Callout>
+          <Callout tone="warning" title="Scheduled">Reindex scheduled for 02:00. Answers use the previous index until then.</Callout>
           <Callout tone="danger" title="Blocked">No source in the corpus. The model refused, as designed.</Callout>
         </div>
       </Bench>
 
       <Bench index="C.06" name="Field · Input · Select · Switch" note="Labels are sentence case. Focus is a 1px viridian border plus a matching ring.">
         <div style={{ display: "grid", gap: "var(--space-4)", width: "100%", maxWidth: 420 }}>
-          <Field label="Deployment name" required help="Lowercase, no spaces."><Input defaultValue="ke-1-docs" /></Field>
-          <Field label="Region"><Select options={["Nairobi · ke-1", "Lagos · ng-1", "Addis Ababa · et-1"]} /></Field>
+          <Field label="Deployment name" required help="Lowercase, no spaces."><Input defaultValue="docs-review-prod" /></Field>
+          <Field label="Environment"><Select options={["On-premises", "Private cloud", "Managed"]} /></Field>
           <Field label="Evaluation notes"><Textarea rows={3} placeholder="What did you test?" /></Field>
           <Field label="Retention" error="Retention must be set before the pilot starts."><Input error defaultValue="" /></Field>
           <Switch defaultChecked label="Log every citation for audit" />
@@ -95,11 +96,11 @@ export function ComponentGallery() {
               { label: "Accuracy", value: "0.91", delta: "+18pt", deltaTone: "positive", note: "vs baseline" },
               { label: "p95 latency", value: "310", unit: "ms", delta: "−6.4×", deltaTone: "positive" },
               { label: "Cost / 1k docs", value: "$0.42", delta: "−91%", deltaTone: "positive" },
-              { label: "Cross-border transfers", value: "0", note: "12 months" },
+              { label: "Documents leaving your environment", value: "0", note: "PXW-2026-04" },
             ]}
           />
           <div style={{ marginTop: "var(--space-5)" }}>
-            <Stat label="Cluster uptime" value="99.97" unit="%" note="30 days" />
+            <Stat label="Queries resolved without escalation" value="94" unit="%" note="PXW-2026-05" />
           </div>
         </div>
       </Bench>
@@ -120,16 +121,16 @@ export function ComponentGallery() {
 
       <Bench index="C.09" name="CodeBlock" note="Always on the foundation surface. The language label is the only brass in the component.">
         <div style={{ width: "100%", maxWidth: 620 }}>
-          <CodeBlock title="deploy.sh" lang="bash" code={"privex deploy \\\n  --model privex/adapted-8b-sw \\\n  --region ke-1 \\\n  --boundary strict"} />
+          <CodeBlock title="deploy.sh" lang="bash" code={"privex deploy \\\n  --model privex/customized-8b \\\n  --environment on-premises \\\n  --boundary strict"} />
         </div>
       </Bench>
 
-      <Bench index="C.10" name="SiteHeader · Wordmark" note="One shared mark. Pillars are named by a mono label beside the wordmark, never by a separate logo.">
+      <Bench index="C.10" name="SiteHeader · Wordmark" note="One shared mark. Areas of work are named by a mono label beside the wordmark, never by a separate logo.">
         <div style={{ width: "100%", border: "1px solid var(--color-border)", borderRadius: "var(--radius-2)", overflow: "hidden" }}>
           <SiteHeader
-            pillar="INFRASTRUCTURE"
-            items={["Overview", "Clusters", "Models", "Audit"]}
-            active="Clusters"
+            pillar="AI INFRASTRUCTURE"
+            items={["Overview", "Deployments", "Models", "Audit"]}
+            active="Deployments"
             actions={<Button size="sm" variant="secondary">Sign in</Button>}
           />
         </div>
@@ -138,13 +139,13 @@ export function ComponentGallery() {
 
       <Bench index="C.11" name="Tabs · Breadcrumb" note="Active tab is a 2px viridian underline. Breadcrumbs are mono and uppercase.">
         <div style={{ width: "100%", display: "grid", gap: "var(--space-5)" }}>
-          <Breadcrumb items={["Knowledge", "Research", "PXR-2026-07"]} />
+          <Breadcrumb items={["R&D", "Evaluations", RD.evaluation.id]} />
           <Tabs items={["Evaluation", "Method", "Data"]} active={tab} onChange={setTab}>
             {(current) => (
               <p style={{ padding: "var(--space-4) 0", fontSize: "var(--text-body-sm-size)", color: "var(--color-text-secondary)" }}>
-                {current === "Evaluation" ? "Six models, 1,240 documents, four institutions."
+                {current === "Evaluation" ? "Six models, 1,240 documents, four organizations."
                   : current === "Method" ? "Blind scoring against a rubric written before any output was read."
-                  : "The full set is published under an open licence."}
+                  : "The rubric is published with the result."}
               </p>
             )}
           </Tabs>
@@ -183,18 +184,18 @@ export function ComponentGallery() {
         </div>
       </Bench>
 
-      <Bench index="C.14" name="ModelCard · ResearchCard" note="The two pillar-specific cards. Research leads with the editorial serif; models lead with mono.">
+      <Bench index="C.14" name="ModelCard · ResearchCard" note="The two area-specific cards. Research leads with the editorial serif; models lead with mono.">
         <div style={{ display: "grid", gap: "var(--space-4)", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", width: "100%" }}>
           <ModelCard
-            name="privex/adapted-8b-sw" version="v2.3" task="Financial-document extraction" base="Open 8B"
-            languages={["Swahili", "English", "Kikuyu"]} status="Deployed" statusTone="success"
+            name="privex/customized-8b" version="v1.2" task="Financial-document extraction" base="Open 8B"
+            status="Deployed" statusTone="success"
             metrics={[{ label: "Accuracy", value: "0.91" }, { label: "p95", value: "310ms" }, { label: "Cost/1k", value: "$0.42" }]}
           />
           <ResearchCard
-            index="PXR-2026-07"
-            title="Six open models on Swahili financial documents"
-            summary="Two were usable before adaptation. Tokenizer coverage explained most of the gap."
-            date="14 APR 2026" readTime="8 MIN" authors={["Amina Mwangi"]}
+            index={RD.evaluation.id}
+            title={RD.evaluation.headline}
+            summary="Two were usable without customization. Document layout explained most of the gap."
+            date="14 APR 2026" readTime="8 MIN" authors={[`${CAST.rd.name}, ${CAST.rd.role}`]}
           />
         </div>
       </Bench>

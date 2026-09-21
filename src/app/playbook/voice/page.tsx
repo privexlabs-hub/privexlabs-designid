@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { DoDont, Grid, PageHead, Section } from "@/components/site/ui";
-import { voiceRules } from "@/lib/brand";
+import Link from "next/link";
+import { DoDont, Grid, Note, PageHead, Section } from "@/components/site/ui";
+import { discipline, philosophy, voiceRules } from "@/lib/brand";
 
 export const metadata: Metadata = { title: "Voice & content" };
 
@@ -10,7 +11,7 @@ export default function VoicePage() {
       <PageHead
         index="06 / VOICE & CONTENT"
         title="Written by engineers, edited like a publication"
-        lede="The voice is calm, precise and evidence-led. It states what was tested, what worked and where it failed. Confidence comes from the measurement, never from the adjective."
+        lede={philosophy.voice}
       />
 
       <Section index="6.1" title="Tone">
@@ -21,12 +22,13 @@ export default function VoicePage() {
         </div>
       </Section>
 
-      <Section index="6.2" title="Structure" lede="Long-form and short-form both follow the same order. If a piece cannot fill these six, it is not ready to publish.">
+      <Section index="6.2" title="Structure" lede="Long-form and short-form both follow the same order, and each step answers one step of how the work was done. If a piece cannot fill all six, it is not ready to publish.">
         <ol style={{ display: "grid", gap: "var(--space-3)", paddingLeft: 0, listStyle: "none", counterReset: "step" }}>
           {voiceRules.structure.map((s, i) => (
-            <li key={s} style={{ display: "flex", gap: "var(--space-4)", alignItems: "baseline", borderTop: "1px solid var(--color-divider)", paddingTop: "var(--space-3)" }}>
+            <li key={s.step} style={{ display: "flex", gap: "var(--space-4)", alignItems: "baseline", borderTop: "1px solid var(--color-divider)", paddingTop: "var(--space-3)", flexWrap: "wrap" }}>
               <span className="px-label" style={{ color: "var(--color-brand-accent-ink)" }}>{String(i + 1).padStart(2, "0")}</span>
-              <span style={{ fontWeight: 600 }}>{s}</span>
+              <span style={{ fontWeight: 600 }}>{s.step}</span>
+              <span className="px-label" style={{ marginLeft: "auto" }}>Approach · {s.approach}</span>
             </li>
           ))}
         </ol>
@@ -51,15 +53,16 @@ export default function VoicePage() {
       </Section>
 
       <Section index="6.5" title="Discipline">
-        <DoDont
-          dos={[
-            "Name the number, the sample size and the method",
-            "Say where the approach fails as plainly as where it works",
-            "Use sentence case in every headline, button and nav item",
-            "Cut any sentence that would survive unchanged on a competitor's site",
-          ]}
-          donts={voiceRules.banned}
-        />
+        <DoDont dos={discipline.voice.dos} donts={discipline.voice.donts} />
+      </Section>
+
+      <Section index="6.6" title="Taking this elsewhere">
+        <Note>
+          Everything on this page, plus the company document, the areas of work, the content lifecycle, the template
+          catalogue and the visual rules, is assembled as one copy-pasteable document on the{" "}
+          <Link href="/brand-brief">brand brief</Link> — for briefing a writer, an agency, or an
+          external AI tool.
+        </Note>
       </Section>
     </>
   );

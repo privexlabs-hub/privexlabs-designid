@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "assets": "node scripts/generate-assets.mjs"
+    "assets": "node scripts/generate-assets.mjs",
+    "build:internal": "INCLUDE_INTERNAL=1 next build"
   },
   "dependencies": {
     "html-to-image": "1.11.13",

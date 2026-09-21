@@ -1,19 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Grid, Note, PageHead, Section, Table } from "@/components/site/ui";
-import { contentStatuses, lifecycle } from "@/lib/brand";
+import {
+  categoryTreatments, contentMetadata, contentStatuses, lifecycle,
+  philosophy, repurposingMap, socialGrammar, sourceRule,
+} from "@/lib/brand";
 import { TEMPLATES, TEMPLATES_BY_CATEGORY } from "@/lib/templates";
 
 export const metadata: Metadata = { title: "Social system" };
-
-const TREATMENTS = [
-  ["Research", "Editorial serif on paper or foundation dark. One number or one finding, with its sample size."],
-  ["Engineering / Infrastructure", "Schematic diagram on foundation dark. Orthogonal connectors, mono telemetry."],
-  ["Product", "UI-forward on paper. Real interface fragments, never a mocked-up dashboard."],
-  ["Academy", "Educational and lighter in density. More whitespace, shorter lines, numbered steps."],
-  ["Case study", "An outcome metric and a customer quote. The client is named or clearly anonymised."],
-  ["Leadership", "Serif quote on foundation dark, registration marks, attribution in mono."],
-];
 
 export default function SocialPage() {
   return (
@@ -21,23 +15,18 @@ export default function SocialPage() {
       <PageHead
         index="07 / SOCIAL SYSTEM"
         title="Recognisable with the logo removed"
-        lede="One visual grammar runs across every platform: a mono category label, token colours, evidence-led copy, and a hairline footer carrying the wordmark. The test is the same as everywhere else — cover the logo, and it should still be obviously ours."
+        lede={philosophy.social}
       />
 
       <Section index="7.1" title="The grammar" lede="Four elements, in this order, on every published asset.">
         <Table
           head={["Element", "Rule"]}
-          rows={[
-            ["Category label", "Mono, uppercase, brass. \"01 / RESEARCH\" — the index is the pillar number."],
-            ["Content ID", "Mono, muted, top right. \"PXC-2026-041\" — traceable back to the content system."],
-            ["Claim", "One idea. A figure, a finding or a statement — never all three."],
-            ["Footer", "1px rule, wordmark on the left, destination in mono on the right."],
-          ]}
+          rows={socialGrammar.map((r) => [...r])}
         />
       </Section>
 
       <Section index="7.2" title="Category treatments" lede="Categories are differentiated by surface and typographic emphasis, never by a new colour.">
-        <Table head={["Category", "Treatment"]} rows={TREATMENTS} />
+        <Table head={["Category", "Treatment"]} rows={categoryTreatments.map((r) => [...r])} />
       </Section>
 
       <Section index="7.3" title="Formats" lede={`${TEMPLATES.length} templates are built into the editor, grouped by placement. Every one of them is produced from the tokens on this site — nothing is drawn by hand.`}>
@@ -76,38 +65,17 @@ export default function SocialPage() {
       <Section index="7.5" title="Metadata per piece">
         <Table
           head={["Field", "Example"]}
-          rows={[
-            ["Content ID", "PXC-2026-041"],
-            ["Category / pillar", "01 / Research"],
-            ["Source", "Research · product · engineering · customer · experiment · academy · community"],
-            ["Audience", "Regulated enterprise, East Africa"],
-            ["Status", "APPROVED"],
-            ["Platforms", "LinkedIn, X"],
-            ["Related research / product", "PXR-2026-07 · PrivexBot Docs"],
-            ["CTA", "privexlabs.com/research"],
-          ]}
+          rows={contentMetadata.map((r) => [...r])}
         />
         <div style={{ marginTop: "var(--space-5)" }}>
-          <Note>
-            Source is never &ldquo;fill the calendar&rdquo;. If a piece has no source, it does not enter the lifecycle.
-          </Note>
+          <Note>{sourceRule}</Note>
         </div>
       </Section>
 
       <Section index="7.6" title="Repurposing" lede="One serious source becomes nine artefacts. The editor covers every one of them.">
         <Table
           head={["Step", "Artefact", "Template"]}
-          rows={[
-            ["01", "Executive summary", "Square · Data / insight"],
-            ["02", "Article", "Web · Blog hero"],
-            ["03", "LinkedIn carousel", "Carousel · slides 1–10"],
-            ["04", "X thread", "Square · Big stat, Engagement · Tips"],
-            ["05", "Short video", "Vertical · Big stat, YouTube · Review"],
-            ["06", "Academy lesson", "Engagement · How it works"],
-            ["07", "Newsletter", "Email · Newsletter"],
-            ["08", "Quote card", "Square · Customer quote"],
-            ["09", "Case study", "Portrait · Case study"],
-          ]}
+          rows={repurposingMap.map((r) => [r.step, r.artefact, r.template])}
         />
       </Section>
     </>
